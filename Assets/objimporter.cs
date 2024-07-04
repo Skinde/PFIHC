@@ -18,9 +18,10 @@ public class objimporter : MonoBehaviour
     {
         filePath = $"{Application.persistentDataPath}/";
     }
-    public void DownloadFile(string url)
+    public void DownloadFile()
     {
-
+        string url = this.gameObject.GetComponent<TextMeshProUGUI>().text;
+        Debug.Log("Url is: " + url);
         string path = GetFilePath(url);
         if (File.Exists(path))
         {
