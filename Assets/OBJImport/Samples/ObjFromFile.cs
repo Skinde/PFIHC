@@ -1,39 +1,36 @@
 ﻿using Dummiesman;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Net;
-using System;
-using System.Collections;
-using System.Net.Http;
-using System.Text;
 
 public class ObjFromFile : MonoBehaviour
 {
-    string DownloadFileURL = "https://drive.usercontent.google.com/download?id=1lP7U87cbQr4-7ySZm319rUm8jaoOuvdx&export=download&authuser=0";
-    string file_name = "Helicopter.obj";
+    string objPath = string.Empty;
+    string error = string.Empty;
     GameObject loadedObject;
-    void Start()
-    {
-        WebClient client = new WebClient();
-        client.DownloadFileCompleted += new System.ComponentModel.AsyncCompletedEventHandler(SucessLoadTheFile);
-        client.DownloadFileAsync(new Uri(DownloadFileURL), Path.Combine(Application.persistentDataPath, file_name));
-        Debug.Log("Download Completed Attempting to load file!");
-    }
 
-    void SucessLoadTheFile(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-    {
-        string objPath = Path.Combine(Application.persistentDataPath, file_name);
-        if (!File.Exists(objPath))
+    void OnGUI() {
+        objPath = GUI.TextField(new Rect(0, 0, 256, 32), objPath);
+
+        GUI.Label(new Rect(0, 0, 256, 32), "Obj Path:");
+        if(GUI.Button(new Rect(256, 32, 64, 32), "Load File"))
         {
-            Debug.LogError("File Not Found... Waiting");
+            //file path
+            if (!File.Exists(objPath))
+            {
+                error = "File doesn't exist.";
+            }else{
+                if(loadedObject != null)            
+                    Destroy(loadedObject);
+                loadedObject = new OBJLoader().Load(objPath);
+                error = string.Empty;
+            }
         }
+
+        if(!string.IsNullOrWhiteSpace(error))
         {
-            Debug.Log("Found File! " + objPath);
-            if (loadedObject != null)
-                Destroy(loadedObject);
-            loadedObject = new OBJLoader().Load(objPath);
+            GUI.color = Color.red;
+            GUI.Box(new Rect(0, 64, 256 + 64, 32), error);
+            GUI.color = Color.white;
         }
     }
-
 }

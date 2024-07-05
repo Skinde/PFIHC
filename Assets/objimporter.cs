@@ -10,17 +10,18 @@ using TMPro;
 
 public class objimporter : MonoBehaviour
 {
-    GameObject wrapper;
     string filePath;
     GameObject loadedObject;
-    [SerializeField] private TextMeshProUGUI textGUI;
+    [SerializeField] public TextMeshProUGUI textGUI;
+    [SerializeField] public TMP_InputField inputfield;
     private void Start()
     {
         filePath = $"{Application.persistentDataPath}/";
     }
     public void DownloadFile()
     {
-        string url = this.gameObject.GetComponent<TextMeshProUGUI>().text;
+        Debug.Log("Before url");
+        string url = inputfield.text;
         Debug.Log("Url is: " + url);
         string path = GetFilePath(url);
         if (File.Exists(path))
@@ -54,7 +55,7 @@ public class objimporter : MonoBehaviour
 
     string GetFilePath(string url)
     {
-        string filename = "fourthtemp.obj";
+        string filename = "finaltemp.obj";
         Debug.Log($"{filePath}{filename}");
 
         return $"{filePath}{filename}";
@@ -63,8 +64,15 @@ public class objimporter : MonoBehaviour
     void LoadModel(string path)
     {
         if (loadedObject != null)
+        {
+            Debug.Log("Destroying...");
             Destroy(loadedObject);
-            loadedObject = new OBJLoader().Load(path);
+        }
+
+
+        Debug.Log("Calling OBJLoader...");
+        loadedObject = new OBJLoader().Load(path);
+        Debug.Log("Called...");
     }
 
     IEnumerator GetFileRequest(string url, Action<UnityWebRequest> callback)
