@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using Dummiesman;
 using JetBrains.Annotations;
 using TMPro;
+using Oculus.Interaction;
+using Oculus.Interaction.HandGrab;
 
 public class objimporter : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class objimporter : MonoBehaviour
     GameObject loadedObject;
     [SerializeField] public TextMeshProUGUI textGUI;
     [SerializeField] public TMP_InputField inputfield;
+    [SerializeField] public GameObject GrabHack;
+    [SerializeField] public GameObject TheMagicalCube;
     private void Start()
     {
         filePath = $"{Application.persistentDataPath}/";
@@ -72,6 +76,8 @@ public class objimporter : MonoBehaviour
 
         Debug.Log("Calling OBJLoader...");
         loadedObject = new OBJLoader().Load(path);
+        loadedObject.transform.SetParent(GrabHack.transform);
+        loadedObject.AddComponent<ScriptedMovement>();
         Debug.Log("Called...");
     }
 
