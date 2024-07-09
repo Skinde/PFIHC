@@ -6,11 +6,12 @@ using Oculus.Platform.Models;
 
 public class ScriptedMovement : MonoBehaviour
 {
+    private Vector3 starting_scale = new Vector3(1, 1, 1);
     public float moveSpeed = 3f; // Adjust this to control movement speed
     public float rotationSpeed = 90f; // Adjust this to control rotation speed
     public float scaleSpeed = 1f; // Adjust this to control scaling speed
-    public float minScale = 0.1f; // Minimum scale factor
-    public float maxScale = 4f; // Maximum scale factor
+    public float minScale = 0.0625f; // Minimum scale factor
+    public float maxScale = 8f; // Maximum scale factor
     public OVRInput.Controller leftcontroller = OVRInput.Controller.None; // Controller to use (either Left or Right)
     public OVRInput.Controller rightcontroller = OVRInput.Controller.None; // Controller to use (either Left or Right)
     void Start()
@@ -70,13 +71,13 @@ public class ScriptedMovement : MonoBehaviour
     void ScaleObject(float scaleFactor)
     {
         // Limit scaling within specified range
-        Vector3 newScale = transform.localScale * scaleFactor;
-        newScale.x = Mathf.Clamp(newScale.x, minScale, maxScale);
-        newScale.y = Mathf.Clamp(newScale.y, minScale, maxScale);
-        newScale.z = Mathf.Clamp(newScale.z, minScale, maxScale);
+        starting_scale = starting_scale * scaleFactor;
+        starting_scale.x = Mathf.Clamp(starting_scale.x, minScale, maxScale);
+        starting_scale.y = Mathf.Clamp(starting_scale.y, minScale, maxScale);
+        starting_scale.z = Mathf.Clamp(starting_scale.z, minScale, maxScale);
 
         // Apply the new scale
-        transform.localScale = newScale;
+        transform.localScale = starting_scale;
     }
 
 }
