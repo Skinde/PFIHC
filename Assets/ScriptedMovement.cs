@@ -65,6 +65,8 @@ public class ScriptedMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        
+
 
     }
 
